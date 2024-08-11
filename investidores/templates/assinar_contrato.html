@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% load static %}
+{% block 'head' %}
+
+<link rel="stylesheet" href="{% static 'empresarios/css/listar_empresas.css' %}">
+<link rel="stylesheet" href="{% static 'empresarios/css/empresa.css' %}">
+<link rel="stylesheet" href="{% static 'usuarios/css/usuarios.css' %}">
+
+{% endblock 'head' %}
+
+
+{% block 'body' %}
+    {% include "partials/barra_navegacao.html" %}
+    <br><br>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-7">
+                <div class="row">
+                    {% if messages %}
+                        {% for message in messages %}
+                            <section class="alert {{message.tags}}">
+                                {{message}}
+            
+                            </section>
+                        {% endfor %}
+                    {% endif %}
+                    <div class="col-md-3">
+                        <img src="{% static 'geral/img/foto_perfil.webp' %}" class="foto-empresa" alt="">
+                    </div>
+                    <div class="col-md">
+                        <h3>Assinar contrato</h3>
+                    </div>
+                    
+                </div>    
+        </div>
+        <div style="margin-top: 40px; padding: 20px" class="contrato dark-color">
+            <h3>Contrato de investimento</h3>
+            <p>Ao assinar esse contrato você concorda com todas as cláusulas abaixo</p>
+            
+            <ol>
+                <li>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy</li>
+                <li>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy</li>
+                <li>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy</li>
+            </ol>
+
+        </div>
+        <form action="{% url 'assinar_contrato' id %}" enctype='multipart/form-data' method="POST" style="margin-top: 20px;"> {% csrf_token %}
+            <input type="file" name="selfie" class="form-control" style="width: 40%">
+            <br>
+            <input type="file" name="rg" class="form-control" style="width: 40%">
+            <br>
+            <input type="submit" class="btn btn-indigo-normal" value="Assinar contrato">
+        </form>
+        <a href="{% url 'gerenciar_proposta' pi.id %}?acao=aceitar" class="btn btn-indigo-normal">Aceitar</a>
+        <br>
+        <a href="{% url 'gerenciar_proposta' pi.id %}?acao=recusar" style="margin-top: 5px;" class="btn btn-danger">Negar</a>
+
+
+        {% if pi.valuation >= empresa.valuation  %}
+	<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-up-fill" style="color: #00ff00;" viewBox="0 0 16 16">
+	    <path d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z"/>
+	</svg>
+{% else %}
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" style="color: #ff0000;" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
+        <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
+    </svg>
+{% endif %}
+    </div>
+    <br><br>
+{% endblock 'body' %}
